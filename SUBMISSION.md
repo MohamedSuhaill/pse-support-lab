@@ -240,9 +240,3 @@ Be specific: concepts, tools or parts of the system that were new to you, how yo
 ### AI usage disclosure
 
 Which tools you used (or "none"), what for, and how you checked their output against the system.
-
-### Optional: code fix
-
-- **Branch name:**
-- **What I changed and why:**
-- **How I verified it:**

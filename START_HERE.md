@@ -66,8 +66,6 @@ Send us a **link to a git repository** containing your copy of this repo with:
 - [`SUBMISSION.md`](SUBMISSION.md) completed.
 - Your evidence in an `evidence/` folder: screenshots, log excerpts, queries and their output. Link to them from `SUBMISSION.md`.
 
-**Optional bonus:** code fix(es) on a separate git branch, with an explanation in `SUBMISSION.md` of what you changed and why.
-
 ## Rules
 
 - You may read and change any code in this repository.
