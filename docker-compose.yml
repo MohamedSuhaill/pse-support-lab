@@ -1,0 +1,177 @@
+name: invoicely-lite
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  postgres:
+    image: postgres:16.15-alpine3.23
+    environment:
+      POSTGRES_DB: invoicely
+      POSTGRES_USER: invoicely
+      POSTGRES_PASSWORD: invoicely
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U invoicely -d invoicely"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 256m
+    restart: unless-stopped
+    logging: *logging
+
+  asp-mock:
+    build: ./services/asp-mock
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8090/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 64m
+    restart: unless-stopped
+    logging: *logging
+
+  api:
+    build: ./services/api
+    environment:
+      DATABASE_URL: postgres://invoicely:invoicely@postgres:5432/invoicely?sslmode=disable
+      ASP_URL: http://asp-mock:8090
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      asp-mock:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    mem_limit: 128m
+    memswap_limit: 128m
+    restart: unless-stopped
+    logging: *logging
+
+  web:
+    build: ./web
+    environment:
+      API_URL: http://api:8080
+      GRAFANA_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/upload"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    mem_limit: 256m
+    restart: unless-stopped
+    logging: *logging
+
+  prometheus:
+    image: prom/prometheus:v3.16.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=3d
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    mem_limit: 384m
+    restart: unless-stopped
+    logging: *logging
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:v0.60.6
+    command:
+      - --housekeeping_interval=5s
+      - --docker_only=true
+      - --store_container_labels=false
+      - --whitelisted_container_labels=com.docker.compose.service,com.docker.compose.project
+      - --disable_metrics=advtcp,cpu_topology,cpuset,hugetlb,memory_numa,percpu,process,referenced_memory,resctrl,sched,tcp,udp,disk,diskIO
+    privileged: true
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /run/containerd/containerd.sock:/run/containerd/containerd.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    mem_limit: 256m
+    restart: unless-stopped
+    logging: *logging
+
+  loki:
+    image: grafana/loki:3.7.9
+    command: ["-config.file=/etc/loki/config.yml"]
+    volumes:
+      - ./observability/loki/config.yml:/etc/loki/config.yml:ro
+      - loki-data:/loki
+    mem_limit: 384m
+    restart: unless-stopped
+    logging: *logging
+
+  alloy:
+    image: grafana/alloy:v1.21.3
+    command: ["run", "--server.http.listen-addr=0.0.0.0:12345", "--storage.path=/var/lib/alloy/data", "/etc/alloy/config.alloy"]
+    volumes:
+      - ./observability/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /run/containerd/containerd.sock:/run/containerd/containerd.sock:ro
+    depends_on:
+      - loki
+    mem_limit: 192m
+    restart: unless-stopped
+    logging: *logging
+
+  grafana:
+    image: grafana/grafana:13.2.6
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      GF_PLUGINS_PREINSTALL_DISABLED: "true"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/invoicely-overview.json
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+      - loki
+    mem_limit: 384m
+    restart: unless-stopped
+    logging: *logging
+
+  # Command-line tools (sample generator and traffic replay). Used by `make load`, `make replay`, `make samples`.
+  tools:
+    build: ./tools
+    profiles: ["tools"]
+    environment:
+      API_URL: http://api:8080
+
+volumes:
+  pgdata:
+  prometheus-data:
+  loki-data:

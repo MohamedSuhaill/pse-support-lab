@@ -1,0 +1,87 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: invoicely-api
+    folder: Invoicely
+    interval: 30s
+    rules:
+      - uid: invoicely-api-restarted
+        title: Invoicely API restarted
+        condition: C
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels:
+          service: api
+          severity: critical
+        annotations:
+          summary: API process restarted {{ $values.B.Value }} time(s) in the last 15 minutes
+          dashboardUrl: http://localhost:3001/d/invoicely-overview
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 900
+              to: 0
+            model:
+              refId: A
+              expr: changes(process_start_time_seconds{job="api"}[15m])
+              instant: true
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              refId: B
+              type: reduce
+              expression: A
+              reducer: last
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: B
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
+
+      - uid: invoicely-api-5xx
+        title: Invoicely API 5xx responses
+        condition: C
+        for: 1m
+        noDataState: OK
+        execErrState: Error
+        labels:
+          service: api
+          severity: warning
+        annotations:
+          summary: The API returned {{ $values.B.Value }} 5xx responses in the last 5 minutes
+          dashboardUrl: http://localhost:3001/d/invoicely-overview
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 300
+              to: 0
+            model:
+              refId: A
+              expr: sum(increase(invoicely_http_request_duration_seconds_count{code=~"5.."}[5m])) or vector(0)
+              instant: true
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              refId: B
+              type: reduce
+              expression: A
+              reducer: last
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: B
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
