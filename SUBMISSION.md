@@ -7,6 +7,10 @@
 
 > Replies below are drafts written on the **exercise clock** (Monday 16 November 2026, Asia/Dubai). Keep your real time in the time log at the end. Put screenshots, log excerpts and query output in `evidence/` and link to them.
 
+> **Required:** the Acknowledgement and Priority sections for **all five** items, and the full write-up (investigation log onwards) for **at least three** items of your choice. For an item you did not fully investigate, replace the remaining sections with "Not investigated — what I would check next: …".
+
+- **Items I fully investigated, and why I chose them:**
+
 ---
 
 ## Incident 1 — `inbox/01-oasis-builders-upload-stuck.md`

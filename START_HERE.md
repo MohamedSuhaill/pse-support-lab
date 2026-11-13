@@ -14,7 +14,7 @@ You are the on-shift **L1 Product Support Engineer** at Invoicely Lite.
 
 It is **Monday 16 November 2026**. Your shift starts at **09:00 Asia/Dubai** (UTC+4). During the morning, five items arrive in [`inbox/`](inbox/): customer emails, a partner email and an internal alert. Treat them as they arrive, in the order of their timestamps.
 
-For each item, do what you would do on a real shift: acknowledge, prioritise, investigate, find the root cause with evidence, reply to the customer, and escalate where that is the right call.
+Do what you would do on a real shift: acknowledge and prioritise every item, then investigate, find the root cause with evidence, reply to the customer, and escalate where that is the right call. See **Time** below for what is required and what is optional.
 
 ## What we assess
 
@@ -28,8 +28,11 @@ For each item, do what you would do on a real shift: acknowledge, prioritise, in
 ## Time
 
 - You have **24 hours** from the time you receive the assignment email. We expect roughly **6–8 hours** of actual work.
-- **Depth over polish.** A well-evidenced root cause for a few items is worth more than shallow notes on all five.
-- It is fine not to finish everything. If you run out of time, write down what you would do next.
+- **What is required, and what is up to you:**
+  - **All five items:** an acknowledgement reply (with the time you would send it) and a priority with your reason. This is quick, and it is required for every item.
+  - **At least three items, your choice:** the full investigation — root cause with evidence, then the customer reply or the escalation note. Pick them by priority, the way you would on a real shift, and say why you chose them.
+  - **The rest:** optional. For any item you do not fully investigate, write what you would check next.
+- **Depth over polish.** Three well-evidenced root causes are worth more than shallow notes on all five.
 - Keep two clocks apart: the **exercise clock** (Monday 16 Nov 2026, Asia/Dubai) for your replies and SLA decisions, and your **real time** for the time log.
 
 ## How to run it
