@@ -1,0 +1,32 @@
+API SERVICE RESTART — INVESTIGATION
+
+Issue:
+Grafana reported three API restarts within 15 minutes.
+Customers reported intermittent HTTP 502 errors during uploads.
+
+Findings:
+- Docker RestartCount: 2
+- OOMKilled: false
+- API container status: Running
+- API health endpoint: {"status":"ok"}
+- All 9 application and monitoring containers were running
+  during the service check.
+- No matching error, fatal, panic, exception or shutdown
+  messages were found in the filtered API logs.
+
+Conclusion:
+Two container restarts are confirmed.
+The API is currently healthy.
+The root cause of the restarts remains unknown.
+The reported historical 502 errors have not been independently
+verified from the available evidence.
+
+Recommended action:
+- Escalate to L2/Engineering to investigate the restart cause.
+- Correlate restart timestamps with infrastructure and
+  application logs.
+- Verify the historical 502 impact.
+- Continue monitoring API health and upload success.
+
+Status:
+Current health confirmed. Root cause under investigation.

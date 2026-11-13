@@ -1,0 +1,40 @@
+OASIS BUILDERS SUPPLY LLC — INVESTIGATION
+
+Issue:
+Customer reported that the November Excel upload remained in Processing,
+with repeated uploads and duplicate-document-number warnings.
+
+Investigation:
+1. Replayed oasis-builders-nov-2026.xlsx.
+2. Import ID: 12f8079f-157b-4213-80a5-6f9e5f750983
+3. 600 rows processed.
+4. 8 invoices accepted.
+5. All 8 invoices have ASP message IDs.
+
+Database findings:
+1. Two November imports were found:
+   - Earlier: ac2fad4c-8e3e-4c66-9d93-90d824f4591a
+   - Latest: 12f8079f-157b-4213-80a5-6f9e5f750983
+2. Earlier import: 8 accepted invoices.
+3. Latest import: 8 accepted invoices.
+4. No exact duplicate invoice numbers were found.
+5. Both sets have matching buyer names and invoice amounts.
+6. Earlier invoice suffix: GGBY.
+7. Latest invoice suffix: GIRB.
+8. Each set has separate ASP message IDs.
+
+Conclusion:
+The earlier upload had already succeeded. The subsequent replay
+created another set of eight accepted invoices with matching buyers
+and amounts but different invoice numbers.
+
+Potential duplicate business submission requires investigation.
+
+Recommended action:
+- Do not ask the customer to upload the file again.
+- Escalate to L2/Engineering to verify whether both sets were
+  delivered to the buyers.
+- Confirm the correct invoice set before advising the customer.
+
+Status:
+Investigation completed. Duplicate delivery not yet confirmed.

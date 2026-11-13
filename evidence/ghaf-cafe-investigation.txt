@@ -1,0 +1,28 @@
+GHAF TREE CAFE LLC — INVESTIGATION
+
+Issue:
+All four invoices were rejected because the issue date
+was supplied in DD/MM/YYYY format instead of YYYY-MM-DD.
+
+Customer's date:
+13/11/2026
+
+Expected format:
+2026-11-13
+
+Impact:
+- Total invoices: 4
+- Rejected invoices: 4
+- Issue date is valid, but the format is incorrect.
+
+Likely cause:
+Date-format mismatch in the uploaded Excel file.
+
+Recommended action:
+- Ask the customer to correct the date format.
+- Use YYYY-MM-DD for the issue date.
+- Verify the corrected file before retrying the invoices.
+
+Status:
+Issue identified from the customer report.
+Technical replay and verification still required.

@@ -1,0 +1,30 @@
+SAHARA MEDICAL — NEXT INVESTIGATION CHECKS
+
+Issue:
+BluePeak ERP Integrations reports that 40 invoices received
+HTTP 201, but Emirates Palm Hospital received only some invoices.
+
+Known information:
+- Portal shows invoices as Submitted.
+- ASP references are missing for many invoices.
+- Connector logs report no errors.
+- Customer asks whether invoices were lost and whether they
+  should resend them.
+
+Priority:
+P2 — partial invoice delivery / major customer impact.
+
+Next checks:
+1. Retrieve the import details and identify all 40 invoices.
+2. Check each invoice's status and event history.
+3. Identify invoices still in Submitted status.
+4. Check ASP responses and message IDs.
+5. Compare submitted invoices with accepted invoices.
+6. Check whether the buyer received the missing invoices.
+
+Recommended action:
+Do not resend invoices until their existing delivery status
+is verified. Escalate unresolved submissions to L2/Engineering.
+
+Status:
+Further investigation required.

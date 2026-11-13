@@ -1,0 +1,47 @@
+AL NOOR FUEL & LUBRICANTS LLC — INVESTIGATION
+
+Issue:
+Three of six fuel invoices were rejected by the ASP with BR-CO-15.
+
+Import ID:
+3567de18-6e94-4758-8ac3-9ba7ac756873
+
+Import summary:
+- Total invoices: 6
+- Accepted: 3
+- Rejected: 3
+- All six passed portal validation.
+
+Rejected invoices:
+
+1. ANF-2611-0042-GJ9A
+   Actual total: AED 15,022.42
+   Expected total: AED 15,022.43
+   Difference: AED 0.01
+
+2. ANF-2611-0044-GJ9A
+   Actual total: AED 11,817.57
+   Expected total: AED 11,817.59
+   Difference: AED 0.02
+
+3. ANF-2611-0046-GJ9A
+   Actual total: AED 5,610.99
+   Expected total: AED 5,611.00
+   Difference: AED 0.01
+
+Root cause:
+The VAT-inclusive total does not equal the VAT-exclusive
+total plus the VAT amount. The ASP rejected all three
+invoices under BR-CO-15.
+
+Likely cause:
+Invoice total calculation or rounding inconsistency.
+The exact source of the discrepancy is not yet confirmed.
+
+Recommended action:
+- Escalate to L2/Engineering with the three invoice IDs.
+- Ask the customer not to resubmit unchanged invoices.
+- Verify corrected totals before retrying.
+
+Status:
+Three rejections investigated. Root validation failure confirmed.
