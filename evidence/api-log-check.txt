@@ -1,0 +1,23 @@
+API Log Investigation
+=====================
+
+File checked:
+evidence/api-logs.txt
+
+Command executed:
+grep -iE 'error|fatal|panic|exception|shutdown|signal|killed' evidence/api-logs.txt | tail -30
+
+Observed result:
+No matching lines were returned.
+
+Conclusion:
+The captured API logs did not contain messages matching
+the searched error and shutdown keywords.
+
+Limitation:
+This does not establish the root cause of the reported
+API restarts or intermittent 502 responses.
+
+Further action:
+Correlate the Grafana alert timestamps with application,
+container and infrastructure logs.

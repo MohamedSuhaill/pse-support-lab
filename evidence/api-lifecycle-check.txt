@@ -1,0 +1,27 @@
+API Lifecycle Investigation
+===========================
+
+Check performed:
+Filtered Docker events for container lifecycle events:
+die, restart, oom, kill, start and stop.
+
+Command:
+grep -E ' (die|restart|oom|kill|start|stop)( |$)' evidence/api-events.txt | tail -30
+
+Observed result:
+No matching container lifecycle events were returned.
+
+Additional observation:
+The captured event output contains Docker health-check executions:
+wget -qO- http://localhost:8080/healthz
+
+These health checks completed with exitCode 0.
+
+Conclusion:
+The captured event file does not establish the cause of the
+reported API restarts. Docker inspection separately reported
+RestartCount=2 and OOMKilled=false.
+
+Further investigation:
+Correlate Grafana alert timestamps with API container lifecycle
+events and infrastructure logs.

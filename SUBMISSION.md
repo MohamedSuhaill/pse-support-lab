@@ -352,6 +352,14 @@ The following investigation notes are included in the `evidence/` directory:
 - `evidence/al-noor-investigation.txt`
 - `evidence/sahara-next-checks.txt`
 - `evidence/ghaf-cafe-investigation.txt`
+- `evidence/api-lifecycle-check.txt` — Docker container lifecycle event check.
+- `evidence/api-log-check.txt` — API error and shutdown log search.
+- `evidence/api-health-check.txt` — API health endpoint response.
+- `evidence/api-events.txt` — Raw Docker event records.
+- `evidence/api-logs.txt` — Raw API logs.
+- `evidence/oasis-query-output.txt` — Oasis import history query output.
+- `evidence/al-noor-query-output.txt` — Al Noor invoice status query output.
+- `evidence/al-noor-rejection-details.txt` — Al Noor ASP rejection details and response.
 
 These notes document the checks and findings gathered during the lab investigation.
 

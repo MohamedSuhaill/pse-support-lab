@@ -1,0 +1,16 @@
+API Health Check Evidence
+========================
+
+Command:
+curl -s http://localhost:8080/healthz
+
+Output:
+{"status":"ok"}
+
+Finding:
+The API health endpoint returned a successful response
+at the time of this check.
+
+Limitation:
+This confirms health at the time of inspection only.
+It does not prove that earlier 502 errors are resolved.
